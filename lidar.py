@@ -148,6 +148,7 @@ class LD06(object):
         self.measurements = [] # list of (distance, angle, time, scan, index) 
         self.flag2c = False
         self.loop_flag = True
+        self.tmpString = ""
 
         # import glob
         
@@ -183,47 +184,37 @@ class LD06(object):
         self.running = True    
     
     def poll(self):
-        tmpString = ""
-        self.flag2c = True
-        self.loop_flag = True
-        self.measurements.clear()
         if self.running:
             now = time.time()
             try:
-                # while self.loop_flag:
-                for i in range(0, 1000):
-                    b = self.serial.read()
-                    tmpInt = int.from_bytes(b, 'big')
+                b = self.serial.read()
+                tmpInt = int.from_bytes(b, 'big')
+                if (tmpInt == 0x54):
+                    self.tmpString +=  b.hex()+" "
+                    self.flag2c = True
+                elif(tmpInt == 0x2c and self.flag2c):
+                    self.tmpString += b.hex()
+                    print(self.tmpString)
+                    if(not len(self.tmpString[0:-5].replace(' ','')) == 90 ):
+                        self.tmpString = ""
+                        self.flag2c = False
+                        self.loop_flag = False
+                        print("hi")
+                        return
+                    lidarData = CalcLidarData(self.tmpString[0:-5])
+                    self.angles.extend(lidarData.Angle_i)
+                    self.distances.extend(lidarData.Distance_i)
                     
-                    if (tmpInt == 0x54):
-                        tmpString +=  b.hex()+" "
-                        self.flag2c = True
-                        continue
-                    
-                    elif(tmpInt == 0x2c and self.flag2c):
-                        tmpString += b.hex()
-                       
-                        if(not len(tmpString[0:-5].replace(' ','')) == 90 ):
-                            tmpString = ""
-                            self.flag2c = False
-                            self.loop_flag = False
-                            continue
-                    
-                        lidarData = CalcLidarData(tmpString[0:-5])
-                        
-                        self.angles.extend(lidarData.Angle_i)
-                        self.distances.extend(lidarData.Distance_i)
-                        distance1 = [lidarData.Distance_i[i] for i in range(len(lidarData.Distance_i)) if 355 <= lidarData.Angle_i[i] or lidarData.Angle_i[i] <= 5]
-                        angle1 = [lidarData.Angle_i[i] for i in range(len(lidarData.Angle_i)) if 355 <= lidarData.Angle_i[i] or lidarData.Angle_i[i] <= 5]
-                        if angle1:
-                            # print(angle1)
-                            self.measurements.append((distance1, angle1, now, self.full_scan_count, self.full_scan_index))
-                            break
-                        tmpString = ""
-                    else:
-                        # print("hi")
-                        tmpString += b.hex()+" "
-                    self.flag2c = False
+                    distance1 = [lidarData.Distance_i[i] for i in range(len(lidarData.Distance_i)) if 355 <= lidarData.Angle_i[i] or lidarData.Angle_i[i] <= 5]
+                    angle1 = [lidarData.Angle_i[i] for i in range(len(lidarData.Angle_i)) if 355 <= lidarData.Angle_i[i] or lidarData.Angle_i[i] <= 5]
+                    print(lidarData.Distance_i)
+                    print(lidarData.Angle_i)
+                    if angle1:
+                        self.measurements.append((distance1, angle1, now, self.full_scan_count, self.full_scan_index))
+                        self.tmpString = ""
+                else:
+                    self.tmpString += b.hex()+" "
+                self.flag2c = False
 
             except serialsss.serialutil.SerialException:
                 logger.error('SerialException from LD06.')
@@ -251,10 +242,16 @@ class LD06(object):
     def run(self):
         if not self.running:
             return []
-        #   
-        # poll for 'batch' and return it
-        # poll for time provided in constructor
-        self.poll()
+        batch_time = time.time() + self.measurement_batch_ms / 1000.0
+        self.tmpString = ""
+        self.flag2c = True
+        self.loop_flag = True
+        self.measurements.clear()
+        while True:
+            self.poll()
+            time.sleep(0)  # yield time to other threads
+            if time.time() >= batch_time:
+                break
         # time.sleep(0)  # yield time to other threads
         return self.measurements
 
