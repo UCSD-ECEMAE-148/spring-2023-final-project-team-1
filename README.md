@@ -51,6 +51,8 @@ We modified the donkeycar drive script inside the path follow package manage.py.
 
 - ObstacleDetector
 
+- OriginReached
+
 
 ### What Worked
 
@@ -60,6 +62,8 @@ We modified the donkeycar drive script inside the path follow package manage.py.
 
 - When the ssh disconnects the script continues to run.
 
+- Able to have the car stop when it returns to the home position.
+
 ### What didn't work as expected
 
 - While we were able to implement the LD06 lidar inside donkeycar, our current implementation is too delayed for a useful obstacle avoidance algoirhtm. Also it currently takes too long to run, hanging up the other parts of donkeycar. 
@@ -68,11 +72,11 @@ We modified the donkeycar drive script inside the path follow package manage.py.
 
 - One solution would be to get an RPlidar or a similar lidar that is supported out of the box by Donkeycar
 
-- There is potential to rewrite our part to get quicker measurements.
+- There is potential to rewrite our LD06 part to get quicker measurements.
   
 ## If we had another week
 
-If we had more time, we would like to have the car stop at once it has returned. More importantly, we would also very much like to get the lidar working and avoiding obstacles.
+We would work more on getting the LD06 lidar to work with donkeycar, as we are pretty close to having it working besides from the issues with latency.
 
 ## Weekly Presentations
 [Project Proposal](https://docs.google.com/presentation/d/1qEtfq2pOg_nVsMLH8ufqDtqr5y_wK0nWoPhvqwehMsQ/edit?usp=sharing)
@@ -80,3 +84,6 @@ If we had more time, we would like to have the car stop at once it has returned.
 [Weekly Update 1](https://docs.google.com/presentation/d/1sYh_EFIsonskD8AUsqKGqOPb3pKjL_P4ma7JfMe9Sg0/edit?usp=sharing)
 
 [Final Presentation](https://www.beautiful.ai/player/-NY-q95_Cp7QaUgcc3yY)
+
+## References
+[LD06 Liar](https://github.com/henjin0/LIDAR_LD06_python_loder)
