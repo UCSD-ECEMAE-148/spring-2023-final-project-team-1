@@ -17,9 +17,9 @@ Dominic Orlando - ECE
 
 #### Nice to have
 
-- if time allows we also would like to add obstacle avoidance so that the car can make it home safely.
+- Obstacle avoidance with the LD06 Lidar.
 
-- I would be also nice to be able to detect is the program crashes or if a computer that is ssh’d into it loses connection 
+- Detection of program crash or ssh disconnection to then trigger the return home. 
 
 ## Video Demonstrations
 
@@ -38,7 +38,7 @@ Dominic Orlando - ECE
 
 ## What we have done
 
-We modified the donkeycar drive script inside the path follow package manage.py. We added donkeycar parts for detecting controller disconnection. The way that we are detecting if the controller is disconnected is by using a threshold number. After a certain number of callbacks without controller inputs changing, it assumes that the controller is disconnected. We added a part to switch the pilot mode from user input to the path follow self driving pilot. Inside the this part we also added code to save the path from the starting (Home) position to the current position that it is at. It then inverts the path and loads the inverted path for the path follow pilot to use. We also attempted to add a part for the lidar. The lidar that we are using is not currently supported by donkeycar. We attempted to add a driver for the lidar we are using. We were able to recieve some data.
+We modified the donkeycar drive script inside the path follow package manage.py. We added donkeycar parts for detecting controller disconnection. The way that we are detecting if the controller is disconnected is by using a threshold number. After a certain number of callbacks without controller inputs changing, it assumes that the controller is disconnected. We added a part to switch the pilot mode from user input to the path follow self driving pilot. Inside the this part we also added code to save the path from the starting (Home) position to the current position that it is at. It then inverts the path and loads the inverted path for the path follow pilot to use. We also added a part for the LD06 lidar since the LD06 lidar isn't supported by donkeycar. We also added a part that takes the lidar data as an input and adjusts the cross-track error accordingly.
 
 
 ### Parts added
@@ -47,6 +47,10 @@ We modified the donkeycar drive script inside the path follow package manage.py.
 
 - ChangeMode
 
+- LD06Liar
+
+- ObstacleDetector
+
 
 ### What Worked
 
@@ -54,13 +58,17 @@ We modified the donkeycar drive script inside the path follow package manage.py.
 
 - We were also able to have the car return to the home postion.
 
+- When the ssh disconnects the script continues to run.
+
 ### What didn't work as expected
 
-- The lidar did not work as expected. We spent quite a few hours trying to make that work. Unfortunately, the lidar data was not clear enought for the car to make actionable decisions. Additonally, we noticed a large amount of delay in the data.
+- While we were able to implement the LD06 lidar inside donkeycar, our current implementation is too delayed for a useful obstacle avoidance algoirhtm. Also it currently takes too long to run, hanging up the other parts of donkeycar. 
 
 ### Possible Solutions
 
-- One solution for the lidar would be to get the type of lidar that works better for donkeycar
+- One solution would be to get an RPlidar or a similar lidar that is supported out of the box by Donkeycar
+
+- There is potential to rewrite our part to get quicker measurements.
   
 ## If we had another week
 
