@@ -40,6 +40,14 @@ Dominic Orlando - ECE
 
 We modified the donkeycar drive script inside the path follow package manage.py. We added donkeycar parts for detecting controller disconnection. The way that we are detecting if the controller is disconnected is by using a threshold number. After a certain number of callbacks without controller inputs changing, it assumes that the controller is disconnected. We added a part to switch the pilot mode from user input to the path follow self driving pilot. Inside the this part we also added code to save the path from the starting (Home) position to the current position that it is at. It then inverts the path and loads the inverted path for the path follow pilot to use. We also attempted to add a part for the lidar. The lidar that we are using is not currently supported by donkeycar. We attempted to add a driver for the lidar we are using. We were able to recieve some data.
 
+
+### Parts added
+
+- ControllerTest
+
+- ChangeMode
+
+
 ### What Worked
 
 - We were able to detect controller disconnect. 
