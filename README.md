@@ -70,3 +70,5 @@ If we had more time, we would like to have the car stop at once it has returned.
 [Project Proposal](https://docs.google.com/presentation/d/1qEtfq2pOg_nVsMLH8ufqDtqr5y_wK0nWoPhvqwehMsQ/edit?usp=sharing)
 
 [Weekly Update 1](https://docs.google.com/presentation/d/1sYh_EFIsonskD8AUsqKGqOPb3pKjL_P4ma7JfMe9Sg0/edit?usp=sharing)
+
+[Final Presentation](https://www.beautiful.ai/player/-NY-q95_Cp7QaUgcc3yY)
