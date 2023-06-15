@@ -59,3 +59,5 @@ We modified the donkeycar drive script inside the path follow package manage.py.
 
 If we had more time, we would like to have the car stop at once it has returned. More importantly, we would also very much like to get the lidar working and avoiding obstacles.
 
+## Weekly Presentations
+[Project Proposal](https://docs.google.com/presentation/d/1qEtfq2pOg_nVsMLH8ufqDtqr5y_wK0nWoPhvqwehMsQ/edit?usp=sharing)
