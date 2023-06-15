@@ -28,6 +28,7 @@ Dominic Orlando - ECE
 [![IMAGE ALT TEXT](http://img.youtube.com/vi/uU5O4HXrWTc/0.jpg)](http://www.youtube.com/watch?v=uU5O4HXrWTc "Video Title")
 
 ### Full Demo
+[![IMAGE ALT TEXT](http://img.youtube.com/vi/mMoTIyogB1E/0.jpg)](http://www.youtube.com/watch?v=mMoTIyogB1E "Video Title")
 
 ## Schematic
 
@@ -49,13 +50,10 @@ We modified the donkeycar drive script inside the path follow package manage.py.
 
 - The lidar did not work as expected. We spent quite a few hours trying to make that work. Unfortunately, the lidar data was not clear enought for the car to make actionable decisions. Additonally, we noticed a large amount of delay in the data.
 
-- The gps also in final testing stopped receiving data. Which was quite a set back. Unfortunately, we were unable to get a video of the car working before this happened.
-
 ### Possible Solutions
 
 - One solution for the lidar would be to get the type of lidar that works better for donkeycar
-- One solution for the gps would be to try a different gps
-
+  
 ## If we had another week
 
 If we had more time, we would like to have the car stop at once it has returned. More importantly, we would also very much like to get the lidar working and avoiding obstacles.
