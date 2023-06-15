@@ -287,9 +287,9 @@ def drive(cfg, use_joystick=False, camera_type='single'):
     # We change the touptus of the look ahead path thing to then feed them into our lidar function which will
     #mess with the cross track error and then we feed that into the PID controller to actually steer the car. The pid
     #controlelr is only activated when we are in self driving mode so it will only work then 
-    #maube we also need to mess with the closest_pt but we will do that when we get there
-    # This will use the cross track error and PID constants to try to steer back towards the path.
-    #Actually make another thing that messes with the path with the lidar data
+    # #maube we also need to mess with the closest_pt but we will do that when we get there
+    # # This will use the cross track error and PID constants to try to steer back towards the path.
+    # #Actually make another thing that messes with the path with the lidar data
     lidar = LD06(min_angle=0.174533, max_angle=6.1085, baudrate=230400, timeout=5.0, bytesize=8, parity='N', stopbits=1)
     V.add(lidar, outputs=['distances'], run_condition='run_pilot')
 
@@ -311,23 +311,36 @@ def drive(cfg, use_joystick=False, camera_type='single'):
                 distance, angles, now, full_scan_count, full_scan_index = zip(*distances)
                 # print(angles)
                 distance = distance[0]
-                print(distance)
-                if any(10 > x for x in distance):
+                # print(distance)
+
+                if any(7 > x for x in distance):
                     self.cterror = cterror * self.narrow_constant
                     return self.cterror
             else:
-                print(cterror)
+                # print(cterror)
                 self.cterror = cterror
                 return self.cterror
             if self.cterror != cterror:
                 return self.cterror
     
-    path_messer = path_change(wide_constant=3.0, narrow_constant=8.0, away_value=6.0)
+    path_messer = path_change(wide_constant=3.0, narrow_constant=2.0, away_value=6.0)
     V.add(path_messer, inputs=['distances', 'cte/error', 'cte/closest_pt'], outputs=['cte/error1'], run_condition="run_pilot")
 
     pid = PIDController(p=cfg.PID_P, i=cfg.PID_I, d=cfg.PID_D)
     pilot = PID_Pilot(pid, cfg.PID_THROTTLE, cfg.USE_CONSTANT_THROTTLE, min_throttle=cfg.PID_THROTTLE)
     V.add(pilot, inputs=['cte/error', 'throttles', 'cte/closest_pt'], outputs=['pilot/steering', 'pilot/throttle'], run_condition="run_pilot")
+
+    class stop_detection(object):
+        def __init__(self) -> None:
+            print("hi")
+
+        def run(self, x, y):
+            if x < 0.5 and y < 0.5:
+                return 'user'
+
+    stop_detector = stop_detection
+    V.add(stop_detector, inputs=['pos/x', 'pos/y', 'cte/closest_pt'], outputs=['user/mode'], run_condition="run_pilot") 
+
 
     def dec_pid_d():
         pid.Kd -= cfg.PID_D_DELTA
