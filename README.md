@@ -31,7 +31,8 @@ Dominic Orlando - ECE
 
 ## Schematic
 
-![Final project 148](https://github.com/UCSD-ECEMAE-148/spring-2023-final-project-team-1/assets/114778470/76e8333f-72be-42fc-831b-960b75d53a79)
+
+![Final project 148](https://github.com/UCSD-ECEMAE-148/spring-2023-final-project-team-1/assets/114778470/96904e35-b570-4fe2-b9a1-e34e59cb710e)
 
 
 ## What we have done
